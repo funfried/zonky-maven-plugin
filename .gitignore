@@ -1,0 +1,61 @@
+### Scripts ###
+*.bat
+*.sh
+!pipeline*.sh
+!jenkins*.sh
+!delete_release_from_nexus.sh
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+### VSCode ###
+*.code-workspace
+.vscode/
+
+### NetBeans ###
+nb-configuration.xml
+nbproject/private/
+
+### IntelliJ ###
+/.idea
+*.iml
+
+# Jenkins
+jenkins.gdsl
+*.pdf
+*.png
+!**/resources/**/*.png
+
+### Eclipse ###
+.metadata
+bin/
+target/
+tmp/
+*.class
+*.tmp
+*.bak
+*.swp
+*~.nib
+.settings/
+.loadpath
+
+# Eclipse Core
+.project
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
+# Java annotation processor (APT)
+.factorypath
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+.DS_Store
