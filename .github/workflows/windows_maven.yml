@@ -23,6 +23,8 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
         cache: maven
+    - name: Set up Maven 3.9.x
+      uses: s4u/setup-maven-action@3.9.5
     - name: Build with Maven
       run: mvn -s .ci.settings.xml --no-transfer-progress clean package site
       env:
