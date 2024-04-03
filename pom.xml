@@ -57,11 +57,6 @@
 			<name>Maven Site Distribution</name>
 			<url>scm:git:https://github.com/funfried/zonky-maven-plugin.git</url>
 		</site>
-		<repository>
-			<id>central</id>
-			<name>Nexus Release Repository</name>
-			<url>https://central.sonatype.com</url>
-		</repository>
 	</distributionManagement>
 
 	<properties>
