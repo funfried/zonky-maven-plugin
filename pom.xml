@@ -58,10 +58,14 @@
 			<url>scm:git:https://github.com/funfried/zonky-maven-plugin.git</url>
 		</site>
 		<repository>
-			<id>central</id>
-			<name>Nexus Release Repository</name>
-			<url>https://repo1.maven.org/maven2</url>
+			<id>github</id>
+			<name>GitHub funfried Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/funfried/zonky-maven-plugin</url>
 		</repository>
+		<snapshotRepository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/funfried/zonky-maven-plugin</url>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<properties>
@@ -625,20 +629,6 @@
 	</reporting>
 
 	<profiles>
-		<profile>
-			<id>github</id>
-			<distributionManagement>
-				<repository>
-					<id>github</id>
-					<name>GitHub funfried Apache Maven Packages</name>
-					<url>https://maven.pkg.github.com/funfried/zonky-maven-plugin</url>
-				</repository>
-				<snapshotRepository>
-					<id>github</id>
-					<url>https://maven.pkg.github.com/funfried/zonky-maven-plugin</url>
-				</snapshotRepository>
-			</distributionManagement>
-		</profile>
 		<profile>
 			<id>sonatype-oss-release</id>
 			<build>
