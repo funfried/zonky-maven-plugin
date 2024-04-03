@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2022 Airtango.
- * All rights reserved.
- */
-
 package de.funfried.maven.plugin.zonky.utils;
 
 import java.io.File;

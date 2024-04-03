@@ -37,7 +37,7 @@
 
 	<poweredBy>
 		<logo name="Maven" href="https://maven.apache.org/" img="https://maven.apache.org/images/logos/maven-feather.png" />
-		<logo name="Maven Central" href="https://maven-badges.herokuapp.com/maven-central/de.funfried.netbeans.plugins/zonky-maven-plugin/" img="https://maven-badges.herokuapp.com/maven-central/de.funfried.netbeans.plugins/zonky-maven-plugin/badge.svg" />
+		<logo name="Maven Central" href="https://maven-badges.herokuapp.com/maven-central/de.funfried.maven.plugins/zonky-maven-plugin/" img="https://maven-badges.herokuapp.com/maven-central/de.funfried.maven.plugins/zonky-maven-plugin/badge.svg" />
 		<logo name="Release Build Status" href="https://github.com/funfried/zonky-maven-plugin/actions/workflows/release_maven.yml" img="https://github.com/funfried/zonky-maven-plugin/actions/workflows/release_maven.yml/badge.svg" />
 		<logo name="Linux Build Status" href="https://github.com/funfried/zonky-maven-plugin/actions/workflows/linux_maven.yml" img="https://github.com/funfried/zonky-maven-plugin/actions/workflows/linux_maven.yml/badge.svg" />
 		<logo name="Windows Build Status" href="https://github.com/funfried/zonky-maven-plugin/actions/workflows/windows_maven.yml" img="https://github.com/funfried/zonky-maven-plugin/actions/workflows/windows_maven.yml/badge.svg" />

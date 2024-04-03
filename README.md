@@ -2,7 +2,7 @@
 [![Linux Build Status](https://github.com/funfried/zonky-maven-plugin/actions/workflows/linux_maven.yml/badge.svg)](https://github.com/funfried/zonky-maven-plugin/actions/workflows/linux_maven.yml)
 [![Windows Build Status](https://github.com/funfried/zonky-maven-plugin/actions/workflows/windows_maven.yml/badge.svg)](https://github.com/funfried/zonky-maven-plugin/actions/workflows/windows_maven.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/45f6c8ab0e014809ba98276a709197f0)](https://www.codacy.com/gh/funfried/zonky-maven-plugin/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=funfried/zonky-maven-plugin&amp;utm_campaign=Badge_Grade)
-[![Maven Central](https://img.shields.io/maven-central/v/de.funfried.netbeans.plugins/zonky-maven-plugin)](https://repo1.maven.org/maven2/de/funfried/netbeans/plugins/zonky-maven-plugin/)
+[![Maven Central](https://img.shields.io/maven-central/v/de.funfried.maven.plugins/zonky-maven-plugin)](https://repo1.maven.org/maven2/de/funfried/maven/plugins/zonky-maven-plugin/)
 [![GitHub All Releases](https://img.shields.io/github/downloads/funfried/zonky-maven-plugin/total)](https://github.com/funfried/zonky-maven-plugin/releases)
 [![GitHub issues](https://img.shields.io/github/issues/funfried/zonky-maven-plugin)](https://github.com/funfried/zonky-maven-plugin/issues)
 [![Apache License, Version 2.0](https://img.shields.io/github/license/funfried/zonky-maven-plugin)](http://funfried.github.io/zonky-maven-plugin/licenses.html)
@@ -51,6 +51,6 @@ This plugin uses third-party libraries, which are needed to provide its function
 Support
 ---------
 Keep this project alive by supporting it:
-one-time [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=926F5XBCTK2LQ&source=url) or [![Patreon!](/src/site/resources/imgs/logos/become_a_patron_button.png)](https://www.patreon.com/funfried) or become a [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/funfried) or just [![Buy me a drink](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20drink&emoji=%F0%9F%A5%83&slug=funfried&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00)](https://www.buymeacoffee.com/funfried)
+one-time [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=926F5XBCTK2LQ&source=url) or [![Patreon!](/src/main/site/resources/imgs/logos/become_a_patron_button.png)](https://www.patreon.com/funfried) or become a [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/funfried) or just [![Buy me a drink](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20drink&emoji=%F0%9F%A5%83&slug=funfried&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00)](https://www.buymeacoffee.com/funfried)
 
 If you can't or don't want to spend money you can also just [![say thanks](https://img.shields.io/static/v1?label=say&message=thanks&color=green&style=for-the-badge&logo=handshake)](https://saythanks.io/to/funfried)
