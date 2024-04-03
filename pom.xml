@@ -639,9 +639,8 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
+						<groupId>org.sonatype.central</groupId>
 						<artifactId>central-publishing-maven-plugin</artifactId>
-						<extensions>true</extensions>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
