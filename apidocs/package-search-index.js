@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"de.funfried.maven.plugin.zonky"},{"l":"de.funfried.maven.plugin.zonky.utils"},{"l":"de.funfried.maven.plugins.zonky_maven_plugin"}];updateSearchResults();
