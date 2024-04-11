@@ -21,6 +21,11 @@ public class StopEmbeddedPostgresMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project}", required = true, readonly = true)
 	private MavenProject project;
 
+	/**
+	 * Stops the embedded postgres database.
+	 *
+	 * @throws MojoExecutionException if an error occurs
+	 */
 	@Override
 	public void execute() throws MojoExecutionException {
 		Object obj = project.getProperties().get("zonky");

@@ -77,6 +77,11 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${reactorProjects}", readonly = true, required = true)
 	private List<MavenProject> reactorProjects;
 
+	/**
+	 * Starts the embedded postgres database.
+	 *
+	 * @throws MojoExecutionException if an error occurs
+	 */
 	@Override
 	public void execute() throws MojoExecutionException {
 		EmbeddedPostgres pg;
