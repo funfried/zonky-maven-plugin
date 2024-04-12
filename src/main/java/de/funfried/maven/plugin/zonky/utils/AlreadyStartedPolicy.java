@@ -1,6 +1,7 @@
 package de.funfried.maven.plugin.zonky.utils;
 
 /**
+ * Enum to define all options of the already started state.
  *
  * @author fbahle
  */

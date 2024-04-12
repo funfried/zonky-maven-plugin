@@ -8,6 +8,7 @@ import org.apache.commons.io.IOUtils;
 import io.zonky.test.db.postgres.embedded.EmbeddedPostgres;
 
 /**
+ * Zonky utility class.
  *
  * @author fbahle
  */

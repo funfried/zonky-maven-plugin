@@ -9,7 +9,7 @@
 	</properties>
 
 	<body>
-		<release version="0.1-SNAPSHOT" date="n/a" description="Initial release">
+		<release version="0.1" date="2024-04-12" description="Initial release">
 			<action dev="bahlef" type="add">
 				Added initial start and stop goals with some configuration parameters.
 			</action>

@@ -1,5 +1,7 @@
 package de.funfried.maven.plugin.zonky;
 
+import java.util.List;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -21,6 +23,17 @@ public class StopEmbeddedPostgresMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project}", required = true, readonly = true)
 	private MavenProject project;
 
+	/**
+	 * Contains the full list of projects in the reactor.
+	 */
+	@Parameter(defaultValue = "${reactorProjects}", readonly = true, required = true)
+	private List<MavenProject> reactorProjects;
+
+	/**
+	 * Stops the embedded postgres database.
+	 *
+	 * @throws MojoExecutionException if an error occurs
+	 */
 	@Override
 	public void execute() throws MojoExecutionException {
 		Object obj = project.getProperties().get("zonky");
@@ -28,6 +41,30 @@ public class StopEmbeddedPostgresMojo extends AbstractMojo {
 			EmbeddedPostgres pg = (EmbeddedPostgres) obj;
 
 			ZonkyUtil.stop(pg);
+
+			stopped();
+		}
+	}
+
+	private void stopped() {
+		System.out.println("Stopped embedded postgres database at port " + project.getProperties().get("zonky.port") + " (JDBC URL: " + project.getProperties().get("zonky.jdbcUrl") + ")");
+
+		project.getProperties().remove("zonky.host");
+		project.getProperties().remove("zonky.port");
+		project.getProperties().remove("zonky.database");
+		project.getProperties().remove("zonky.username");
+		project.getProperties().remove("zonky.password");
+		project.getProperties().remove("zonky.jdbcUrl");
+		project.getProperties().remove("zonky");
+
+		for (MavenProject p : reactorProjects) {
+			p.getProperties().remove("zonky.host");
+			p.getProperties().remove("zonky.port");
+			p.getProperties().remove("zonky.database");
+			p.getProperties().remove("zonky.username");
+			p.getProperties().remove("zonky.password");
+			p.getProperties().remove("zonky.jdbcUrl");
+			p.getProperties().remove("zonky");
 		}
 	}
 }
