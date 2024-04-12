@@ -11,10 +11,14 @@
 	<body>
 		<section name="Known issues">
 			<ul>
-				<li>
-					No known issues at the moment, but please check also <a href="https://github.com/funfried/zonky-maven-plugin/issues">here</a>.
-				</li>
+				<li>Missing documentation.</li>
+				<li>The stop goal does not really end the PostgreSQL process.</li>
 			</ul>
+		</section>
+		<section name="GitHub Issue Tracker">
+			<p>
+				Please check also <a href="https://github.com/funfried/zonky-maven-plugin/issues">here</a>.
+			</p>
 		</section>
 	</body>
 </document>
