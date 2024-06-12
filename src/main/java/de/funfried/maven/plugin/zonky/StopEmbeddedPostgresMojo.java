@@ -1,6 +1,8 @@
 package de.funfried.maven.plugin.zonky;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -40,14 +42,18 @@ public class StopEmbeddedPostgresMojo extends AbstractMojo {
 		if (obj != null && obj instanceof EmbeddedPostgres) {
 			EmbeddedPostgres pg = (EmbeddedPostgres) obj;
 
-			ZonkyUtil.stop(pg);
+			try {
+				ZonkyUtil.stop(pg);
 
-			stopped();
+				stopped();
+			} catch (IOException | InterruptedException | TimeoutException ex) {
+				getLog().error("Failed to stop database", ex);
+			}
 		}
 	}
 
 	private void stopped() {
-		System.out.println("Stopped embedded postgres database at port " + project.getProperties().get("zonky.port") + " (JDBC URL: " + project.getProperties().get("zonky.jdbcUrl") + ")");
+		getLog().info("Stopped embedded postgres database at port " + project.getProperties().get("zonky.port") + " (JDBC URL: " + project.getProperties().get("zonky.jdbcUrl") + ")");
 
 		project.getProperties().remove("zonky.host");
 		project.getProperties().remove("zonky.port");

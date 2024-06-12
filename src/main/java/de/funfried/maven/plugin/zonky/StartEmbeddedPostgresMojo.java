@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import javax.sql.DataSource;
 
@@ -47,6 +48,7 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 	 * <ul>
 	 * <li>fail (lets the build fail)</li>
 	 * <li>reinit (drops the database and if "createDatabase" is true recreates the database again)</li>
+	 * <li>restart (stops the database and starts it again)</li>
 	 * <li>ignore (just keeps the current database and does not start a new one)</li>
 	 * </ul>
 	 */
@@ -108,7 +110,15 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 					throw new MojoExecutionException("Failed to reset embedded database", ex);
 				}
 
-				System.out.println("Embedded postgres database reinitialized");
+				getLog().info("Embedded postgres database reinitialized");
+			} else if (AlreadyStartedPolicy.restart.equals(onAlreadyStarted)) {
+				try {
+					ZonkyUtil.stop(pg);
+
+					start(port);
+				} catch (IOException | InterruptedException | TimeoutException ex) {
+					getLog().error("Failed to stop database", ex);
+				}
 			}
 		} else {
 			start(port);
@@ -145,7 +155,7 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 		int pgPort = pg.getPort();
 		String jdbcUrl = pg.getJdbcUrl("postgres", databaseName);
 
-		System.out.println("Started embedded postgres database at port " + pgPort + " (JDBC URL: " + jdbcUrl + ")");
+		getLog().info("Started embedded postgres database at port " + pgPort + " (JDBC URL: " + jdbcUrl + ")");
 
 		project.getProperties().put("zonky.host", "localhost");
 		project.getProperties().put("zonky.port", pgPort);
