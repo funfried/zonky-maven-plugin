@@ -9,7 +9,7 @@
 	</properties>
 
 	<body>
-		<release version="0.2-SNAPSHOT" date="n/a" description="Maintenance release">
+		<release version="0.2" date="2024-09-23" description="Maintenance release">
 			<action dev="bahlef" type="change">
 				Better stop logic and better detection of running instances
 			</action>
