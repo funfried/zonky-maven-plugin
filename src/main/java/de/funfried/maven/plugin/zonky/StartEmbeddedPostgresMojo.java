@@ -1,10 +1,15 @@
 package de.funfried.maven.plugin.zonky;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeoutException;
 
 import javax.sql.DataSource;
 
@@ -16,6 +21,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import de.funfried.maven.plugin.zonky.utils.AlreadyStartedPolicy;
+import de.funfried.maven.plugin.zonky.utils.MavenProjectUtil;
 import de.funfried.maven.plugin.zonky.utils.ZonkyUtil;
 import io.zonky.test.db.postgres.embedded.EmbeddedPostgres;
 
@@ -47,6 +53,7 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 	 * <ul>
 	 * <li>fail (lets the build fail)</li>
 	 * <li>reinit (drops the database and if "createDatabase" is true recreates the database again)</li>
+	 * <li>restart (stops the database and starts it again)</li>
 	 * <li>ignore (just keeps the current database and does not start a new one)</li>
 	 * </ul>
 	 */
@@ -84,15 +91,11 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 	 */
 	@Override
 	public void execute() throws MojoExecutionException {
-		EmbeddedPostgres pg;
-
-		Object obj = project.getProperties().get("zonky");
-		if (obj != null && obj instanceof EmbeddedPostgres) {
+		EmbeddedPostgres pg = MavenProjectUtil.getProjectProperty(project, reactorProjects, "zonky");
+		if (pg != null) {
 			if (AlreadyStartedPolicy.fail.equals(onAlreadyStarted)) {
 				throw new MojoExecutionException("Embedded database already started.");
 			}
-
-			pg = (EmbeddedPostgres) obj;
 
 			if (AlreadyStartedPolicy.reinit.equals(onAlreadyStarted)) {
 				DataSource dataSource = pg.getDatabase("postgres", "postgres");
@@ -108,14 +111,30 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 					throw new MojoExecutionException("Failed to reset embedded database", ex);
 				}
 
-				System.out.println("Embedded postgres database reinitialized");
+				getLog().info("Embedded postgres database reinitialized");
+			} else if (AlreadyStartedPolicy.restart.equals(onAlreadyStarted)) {
+				try {
+					String workDir = project.getProperties().getProperty("zonky.work.directory");
+					String dataDir = project.getProperties().getProperty("zonky.data.directory");
+
+					File workDirFile = new File(workDir);
+					File dataDirFile = new File(dataDir);
+
+					ZonkyUtil.stop(pg, workDirFile, dataDirFile);
+
+					start(port, workDirFile, dataDirFile);
+				} catch (IOException | InterruptedException | TimeoutException ex) {
+					getLog().error("Failed to stop database", ex);
+				}
 			}
 		} else {
-			start(port);
+			String subDir = UUID.randomUUID().toString();
+
+			start(port, new File(workingDirectory, subDir), new File(dataDirectory, subDir));
 		}
 	}
 
-	private EmbeddedPostgres start(int port) throws MojoExecutionException {
+	private EmbeddedPostgres start(int port, File workingDirectory, File dataDirectory) throws MojoExecutionException {
 		EmbeddedPostgres pg;
 
 		try {
@@ -133,7 +152,7 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 				}
 			}
 
-			started(pg);
+			started(pg, workingDirectory, dataDirectory);
 		} catch (IOException ex) {
 			throw new MojoExecutionException("Failed to start embedded database", ex);
 		}
@@ -141,28 +160,23 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 		return pg;
 	}
 
-	private void started(EmbeddedPostgres pg) {
+	private void started(EmbeddedPostgres pg, File workingDirectory, File dataDirectory) {
 		int pgPort = pg.getPort();
 		String jdbcUrl = pg.getJdbcUrl("postgres", databaseName);
 
-		System.out.println("Started embedded postgres database at port " + pgPort + " (JDBC URL: " + jdbcUrl + ")");
+		getLog().info("Started embedded postgres database at port " + pgPort + " (JDBC URL: " + jdbcUrl + ")");
 
-		project.getProperties().put("zonky.host", "localhost");
-		project.getProperties().put("zonky.port", pgPort);
-		project.getProperties().put("zonky.database", databaseName);
-		project.getProperties().put("zonky.username", "postgres");
-		project.getProperties().put("zonky.password", "postgres");
-		project.getProperties().put("zonky.jdbcUrl", jdbcUrl);
-		project.getProperties().put("zonky", pg);
+		Map<String, Object> properties = new HashMap<>();
+		properties.put("zonky.host", "localhost");
+		properties.put("zonky.port", pgPort);
+		properties.put("zonky.database", databaseName);
+		properties.put("zonky.username", "postgres");
+		properties.put("zonky.password", "postgres");
+		properties.put("zonky.jdbcUrl", jdbcUrl);
+		properties.put("zonky.work.directory", workingDirectory.getAbsolutePath());
+		properties.put("zonky.data.directory", dataDirectory.getAbsolutePath());
+		properties.put("zonky", pg);
 
-		for (MavenProject p : reactorProjects) {
-			p.getProperties().put("zonky.host", "localhost");
-			p.getProperties().put("zonky.port", pgPort);
-			p.getProperties().put("zonky.database", databaseName);
-			p.getProperties().put("zonky.username", "postgres");
-			p.getProperties().put("zonky.password", "postgres");
-			p.getProperties().put("zonky.jdbcUrl", jdbcUrl);
-			p.getProperties().put("zonky", pg);
-		}
+		MavenProjectUtil.putProjectProperty(project, reactorProjects, properties);
 	}
 }
