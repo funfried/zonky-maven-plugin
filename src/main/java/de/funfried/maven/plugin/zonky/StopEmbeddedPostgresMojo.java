@@ -1,7 +1,9 @@
 package de.funfried.maven.plugin.zonky;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -11,6 +13,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import de.funfried.maven.plugin.zonky.utils.MavenProjectUtil;
 import de.funfried.maven.plugin.zonky.utils.ZonkyUtil;
 import io.zonky.test.db.postgres.embedded.EmbeddedPostgres;
 
@@ -38,12 +41,16 @@ public class StopEmbeddedPostgresMojo extends AbstractMojo {
 	 */
 	@Override
 	public void execute() throws MojoExecutionException {
-		Object obj = project.getProperties().get("zonky");
-		if (obj != null && obj instanceof EmbeddedPostgres) {
-			EmbeddedPostgres pg = (EmbeddedPostgres) obj;
+		EmbeddedPostgres pg = MavenProjectUtil.getProjectProperty(project, reactorProjects, "zonky");
+		if (pg != null) {
+			String workDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, "zonky.work.directory");
+			String dataDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, "zonky.data.directory");
+
+			File workDirFile = new File(workDir);
+			File dataDirFile = new File(dataDir);
 
 			try {
-				ZonkyUtil.stop(pg);
+				ZonkyUtil.stop(pg, workDirFile, dataDirFile);
 
 				stopped();
 			} catch (IOException | InterruptedException | TimeoutException ex) {
@@ -55,22 +62,7 @@ public class StopEmbeddedPostgresMojo extends AbstractMojo {
 	private void stopped() {
 		getLog().info("Stopped embedded postgres database at port " + project.getProperties().get("zonky.port") + " (JDBC URL: " + project.getProperties().get("zonky.jdbcUrl") + ")");
 
-		project.getProperties().remove("zonky.host");
-		project.getProperties().remove("zonky.port");
-		project.getProperties().remove("zonky.database");
-		project.getProperties().remove("zonky.username");
-		project.getProperties().remove("zonky.password");
-		project.getProperties().remove("zonky.jdbcUrl");
-		project.getProperties().remove("zonky");
-
-		for (MavenProject p : reactorProjects) {
-			p.getProperties().remove("zonky.host");
-			p.getProperties().remove("zonky.port");
-			p.getProperties().remove("zonky.database");
-			p.getProperties().remove("zonky.username");
-			p.getProperties().remove("zonky.password");
-			p.getProperties().remove("zonky.jdbcUrl");
-			p.getProperties().remove("zonky");
-		}
+		MavenProjectUtil.removeProjectProperty(project, reactorProjects,
+				Set.of("zonky.host", "zonky.port", "zonky.database", "zonky.username", "zonky.password", "zonky.jdbcUrl", "zonky.work.directory", "zonky.data.directory", "zonky"));
 	}
 }
