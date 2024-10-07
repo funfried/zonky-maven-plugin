@@ -12,6 +12,9 @@ import org.apache.maven.project.MavenProject;
  * @author fbahle
  */
 public class MavenProjectUtil {
+	private MavenProjectUtil() {
+	}
+
 	public static <E extends Object> E getProjectProperty(MavenProject project, List<MavenProject> reactorProjects, String key) {
 		E value = getProjectProperty(project, key);
 		if (value == null) {
@@ -33,13 +36,13 @@ public class MavenProjectUtil {
 	}
 
 	public static void putProjectProperty(MavenProject project, List<MavenProject> reactorProjects, Map<String, Object> properties) {
-		for (String key : properties.keySet()) {
-			project.getProperties().put(key, properties.get(key));
+		for (Map.Entry<String, Object> item : properties.entrySet()) {
+			project.getProperties().put(item.getKey(), item.getValue());
 		}
 
 		for (MavenProject p : reactorProjects) {
-			for (String key : properties.keySet()) {
-				p.getProperties().put(key, properties.get(key));
+			for (Map.Entry<String, Object> item : properties.entrySet()) {
+				p.getProperties().put(item.getKey(), item.getValue());
 			}
 		}
 	}

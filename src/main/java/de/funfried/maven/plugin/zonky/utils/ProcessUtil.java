@@ -24,9 +24,12 @@ import org.apache.commons.lang3.SystemUtils;
  * @author fbahle
  */
 public class ProcessUtil {
-	private static final Pattern PROCESS_ID_PATTERN = Pattern.compile("([0-9]{1,5}$)");
+	private static final Pattern PROCESS_ID_PATTERN = Pattern.compile("(\\d{1,5}$)");
 
 	public static final long DEFAULT_PROCESS_TIMEOUT = 5000L;
+
+	private ProcessUtil() {
+	}
 
 	public static Set<Integer> getProcessIdsByPort(int port) throws IOException, TimeoutException, InterruptedException {
 		return ProcessUtil.getProcessIdsByPort(port, DEFAULT_PROCESS_TIMEOUT);
