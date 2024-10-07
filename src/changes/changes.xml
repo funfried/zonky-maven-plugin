@@ -9,11 +9,14 @@
 	</properties>
 
 	<body>
-		<release version="0.3-SNAPSHOT" date="n/a" description="n/a">
+		<release version="0.3-SNAPSHOT" date="2024-10-07" description="Bug fix release">
+			<action dev="bahlef" type="fix">
+				Missing properties after reinitialization
+			</action>
 		</release>
 
 		<release version="0.2" date="2024-09-23" description="Maintenance release">
-			<action dev="bahlef" type="change">
+			<action dev="bahlef" type="update">
 				Better stop logic and better detection of running instances
 			</action>
 		</release>

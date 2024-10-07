@@ -111,6 +111,14 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 					throw new MojoExecutionException("Failed to reset embedded database", ex);
 				}
 
+				String workDir = project.getProperties().getProperty("zonky.work.directory");
+				String dataDir = project.getProperties().getProperty("zonky.data.directory");
+
+				File workDirFile = new File(workDir);
+				File dataDirFile = new File(dataDir);
+
+				started(pg, workDirFile, dataDirFile);
+
 				getLog().info("Embedded postgres database reinitialized");
 			} else if (AlreadyStartedPolicy.restart.equals(onAlreadyStarted)) {
 				try {

@@ -15,6 +15,9 @@ import io.zonky.test.db.postgres.embedded.EmbeddedPostgres;
  * @author fbahle
  */
 public class ZonkyUtil {
+	private ZonkyUtil() {
+	}
+
 	public static EmbeddedPostgres start(int port, File workingDirectory, File dataDirectory) throws IOException {
 		return EmbeddedPostgres.builder().setCleanDataDirectory(false).setOverrideWorkingDirectory(workingDirectory).setDataDirectory(dataDirectory).setPort(port).start();
 	}
