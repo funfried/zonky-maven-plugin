@@ -3,7 +3,6 @@ package de.funfried.maven.plugin.zonky;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -41,10 +40,10 @@ public class StopEmbeddedPostgresMojo extends AbstractMojo {
 	 */
 	@Override
 	public void execute() throws MojoExecutionException {
-		EmbeddedPostgres pg = MavenProjectUtil.getProjectProperty(project, reactorProjects, "zonky");
+		EmbeddedPostgres pg = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_DB_INSTANCE);
 		if (pg != null) {
-			String workDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, "zonky.work.directory");
-			String dataDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, "zonky.data.directory");
+			String workDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_WORK_DIRECTORY);
+			String dataDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_DATA_DIRECTORY);
 
 			File workDirFile = new File(workDir);
 			File dataDirFile = new File(dataDir);
@@ -60,9 +59,9 @@ public class StopEmbeddedPostgresMojo extends AbstractMojo {
 	}
 
 	private void stopped() {
-		getLog().info("Stopped embedded postgres database at port " + project.getProperties().get("zonky.port") + " (JDBC URL: " + project.getProperties().get("zonky.jdbcUrl") + ")");
+		getLog().info("Stopped embedded postgres database at port " + MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_PORT) + " (JDBC URL: "
+				+ MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_JDBC_URL) + ")");
 
-		MavenProjectUtil.removeProjectProperty(project, reactorProjects,
-				Set.of("zonky.host", "zonky.port", "zonky.database", "zonky.username", "zonky.password", "zonky.jdbcUrl", "zonky.work.directory", "zonky.data.directory", "zonky"));
+		MavenProjectUtil.removeAllProjectProperties(project, reactorProjects);
 	}
 }
