@@ -34,16 +34,22 @@ public class StopEmbeddedPostgresMojo extends AbstractMojo {
 	private List<MavenProject> reactorProjects;
 
 	/**
+	 * If {@code true}, only one database instance is used for all multimodule projects, otherwise all projects get their own instance.
+	 */
+	@Parameter(defaultValue = "true", property = "singleInstance")
+	private boolean singleInstance;
+
+	/**
 	 * Stops the embedded postgres database.
 	 *
 	 * @throws MojoExecutionException if an error occurs
 	 */
 	@Override
 	public void execute() throws MojoExecutionException {
-		EmbeddedPostgres pg = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_DB_INSTANCE);
+		EmbeddedPostgres pg = MavenProjectUtil.getProjectProperty(project, singleInstance ? reactorProjects : null, MavenProjectUtil.PROP_DB_INSTANCE);
 		if (pg != null) {
-			String workDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_WORK_DIRECTORY);
-			String dataDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_DATA_DIRECTORY);
+			String workDir = MavenProjectUtil.getProjectProperty(project, singleInstance ? reactorProjects : null, MavenProjectUtil.PROP_WORK_DIRECTORY);
+			String dataDir = MavenProjectUtil.getProjectProperty(project, singleInstance ? reactorProjects : null, MavenProjectUtil.PROP_DATA_DIRECTORY);
 
 			File workDirFile = new File(workDir);
 			File dataDirFile = new File(dataDir);
@@ -59,9 +65,9 @@ public class StopEmbeddedPostgresMojo extends AbstractMojo {
 	}
 
 	private void stopped() {
-		getLog().info("Stopped embedded postgres database at port " + MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_PORT) + " (JDBC URL: "
-				+ MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_JDBC_URL) + ")");
+		getLog().info("Stopped embedded postgres database at port " + MavenProjectUtil.getProjectProperty(project, singleInstance ? reactorProjects : null, MavenProjectUtil.PROP_PORT) + " (JDBC URL: "
+				+ MavenProjectUtil.getProjectProperty(project, singleInstance ? reactorProjects : null, MavenProjectUtil.PROP_JDBC_URL) + ")");
 
-		MavenProjectUtil.removeAllProjectProperties(project, reactorProjects);
+		MavenProjectUtil.removeAllProjectProperties(project, singleInstance ? reactorProjects : null);
 	}
 }

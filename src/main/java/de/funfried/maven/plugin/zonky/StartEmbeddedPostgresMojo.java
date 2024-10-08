@@ -43,6 +43,12 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 	private boolean createDatabase;
 
 	/**
+	 * If {@code true}, only one database instance is used for all multimodule projects, otherwise all projects get their own instance.
+	 */
+	@Parameter(defaultValue = "true", property = "singleInstance")
+	private boolean singleInstance;
+
+	/**
 	 * The database name to write your data. Should not be postgres!
 	 */
 	@Parameter(defaultValue = "data", property = "databaseName")
@@ -91,7 +97,7 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 	 */
 	@Override
 	public void execute() throws MojoExecutionException {
-		EmbeddedPostgres pg = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_DB_INSTANCE);
+		EmbeddedPostgres pg = MavenProjectUtil.getProjectProperty(project, singleInstance ? reactorProjects : null, MavenProjectUtil.PROP_DB_INSTANCE);
 		if (pg != null) {
 			if (AlreadyStartedPolicy.fail.equals(onAlreadyStarted)) {
 				throw new MojoExecutionException("Embedded database already started.");
@@ -111,8 +117,8 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 					throw new MojoExecutionException("Failed to reset embedded database", ex);
 				}
 
-				String workDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_WORK_DIRECTORY);
-				String dataDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_DATA_DIRECTORY);
+				String workDir = MavenProjectUtil.getProjectProperty(project, singleInstance ? reactorProjects : null, MavenProjectUtil.PROP_WORK_DIRECTORY);
+				String dataDir = MavenProjectUtil.getProjectProperty(project, singleInstance ? reactorProjects : null, MavenProjectUtil.PROP_DATA_DIRECTORY);
 
 				File workDirFile = new File(workDir);
 				File dataDirFile = new File(dataDir);
@@ -122,8 +128,8 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 				getLog().info("Embedded postgres database reinitialized");
 			} else if (AlreadyStartedPolicy.restart.equals(onAlreadyStarted)) {
 				try {
-					String workDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_WORK_DIRECTORY);
-					String dataDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_DATA_DIRECTORY);
+					String workDir = MavenProjectUtil.getProjectProperty(project, singleInstance ? reactorProjects : null, MavenProjectUtil.PROP_WORK_DIRECTORY);
+					String dataDir = MavenProjectUtil.getProjectProperty(project, singleInstance ? reactorProjects : null, MavenProjectUtil.PROP_DATA_DIRECTORY);
 
 					File workDirFile = new File(workDir);
 					File dataDirFile = new File(dataDir);
@@ -185,6 +191,6 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 		properties.put(MavenProjectUtil.PROP_DATA_DIRECTORY, dataDirectory.getAbsolutePath());
 		properties.put(MavenProjectUtil.PROP_DB_INSTANCE, pg);
 
-		MavenProjectUtil.putProjectProperty(project, reactorProjects, properties);
+		MavenProjectUtil.putProjectProperty(project, singleInstance ? reactorProjects : null, properties);
 	}
 }

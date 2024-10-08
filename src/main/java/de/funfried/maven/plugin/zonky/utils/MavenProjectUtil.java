@@ -37,7 +37,7 @@ public class MavenProjectUtil {
 
 	public static <E extends Object> E getProjectProperty(MavenProject project, List<MavenProject> reactorProjects, String key) {
 		E value = getProjectProperty(project, key);
-		if (value == null) {
+		if (value == null && reactorProjects != null) {
 			for (MavenProject p : reactorProjects) {
 				E v = getProjectProperty(p, key);
 				if (v != null) {
@@ -60,9 +60,11 @@ public class MavenProjectUtil {
 			project.getProperties().put(item.getKey(), item.getValue());
 		}
 
-		for (MavenProject p : reactorProjects) {
-			for (Map.Entry<String, Object> item : properties.entrySet()) {
-				p.getProperties().put(item.getKey(), item.getValue());
+		if (reactorProjects != null) {
+			for (MavenProject p : reactorProjects) {
+				for (Map.Entry<String, Object> item : properties.entrySet()) {
+					p.getProperties().put(item.getKey(), item.getValue());
+				}
 			}
 		}
 	}
@@ -70,8 +72,10 @@ public class MavenProjectUtil {
 	public static void removeProjectProperty(MavenProject project, List<MavenProject> reactorProjects, String propertyKey) {
 		project.getProperties().remove(propertyKey);
 
-		for (MavenProject p : reactorProjects) {
-			p.getProperties().remove(propertyKey);
+		if (reactorProjects != null) {
+			for (MavenProject p : reactorProjects) {
+				p.getProperties().remove(propertyKey);
+			}
 		}
 	}
 
@@ -80,9 +84,11 @@ public class MavenProjectUtil {
 			project.getProperties().remove(key);
 		}
 
-		for (MavenProject p : reactorProjects) {
-			for (String key : propertyKeys) {
-				p.getProperties().remove(key);
+		if (reactorProjects != null) {
+			for (MavenProject p : reactorProjects) {
+				for (String key : propertyKeys) {
+					p.getProperties().remove(key);
+				}
 			}
 		}
 	}

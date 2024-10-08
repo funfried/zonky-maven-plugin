@@ -9,7 +9,10 @@
 	</properties>
 
 	<body>
-		<release version="0.5-SNAPSHOT" date="n/a" description="n/a">
+		<release version="0.5" date="2024-10-08" description="Feature release">
+			<action dev="bahlef" type="add">
+				Added flag to switch between single instance for all multimodule project or an instance for each sub module (which configures the plugin)
+			</action>
 		</release>
 
 		<release version="0.4" date="2024-10-07" description="Bug fix release">
