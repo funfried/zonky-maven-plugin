@@ -91,7 +91,7 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 	 */
 	@Override
 	public void execute() throws MojoExecutionException {
-		EmbeddedPostgres pg = MavenProjectUtil.getProjectProperty(project, reactorProjects, "zonky");
+		EmbeddedPostgres pg = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_DB_INSTANCE);
 		if (pg != null) {
 			if (AlreadyStartedPolicy.fail.equals(onAlreadyStarted)) {
 				throw new MojoExecutionException("Embedded database already started.");
@@ -111,8 +111,8 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 					throw new MojoExecutionException("Failed to reset embedded database", ex);
 				}
 
-				String workDir = project.getProperties().getProperty("zonky.work.directory");
-				String dataDir = project.getProperties().getProperty("zonky.data.directory");
+				String workDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_WORK_DIRECTORY);
+				String dataDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_DATA_DIRECTORY);
 
 				File workDirFile = new File(workDir);
 				File dataDirFile = new File(dataDir);
@@ -122,8 +122,8 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 				getLog().info("Embedded postgres database reinitialized");
 			} else if (AlreadyStartedPolicy.restart.equals(onAlreadyStarted)) {
 				try {
-					String workDir = project.getProperties().getProperty("zonky.work.directory");
-					String dataDir = project.getProperties().getProperty("zonky.data.directory");
+					String workDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_WORK_DIRECTORY);
+					String dataDir = MavenProjectUtil.getProjectProperty(project, reactorProjects, MavenProjectUtil.PROP_DATA_DIRECTORY);
 
 					File workDirFile = new File(workDir);
 					File dataDirFile = new File(dataDir);
@@ -175,15 +175,15 @@ public class StartEmbeddedPostgresMojo extends AbstractMojo {
 		getLog().info("Started embedded postgres database at port " + pgPort + " (JDBC URL: " + jdbcUrl + ")");
 
 		Map<String, Object> properties = new HashMap<>();
-		properties.put("zonky.host", "localhost");
-		properties.put("zonky.port", pgPort);
-		properties.put("zonky.database", databaseName);
-		properties.put("zonky.username", "postgres");
-		properties.put("zonky.password", "postgres");
-		properties.put("zonky.jdbcUrl", jdbcUrl);
-		properties.put("zonky.work.directory", workingDirectory.getAbsolutePath());
-		properties.put("zonky.data.directory", dataDirectory.getAbsolutePath());
-		properties.put("zonky", pg);
+		properties.put(MavenProjectUtil.PROP_HOST, "localhost");
+		properties.put(MavenProjectUtil.PROP_PORT, pgPort);
+		properties.put(MavenProjectUtil.PROP_DATABASE, databaseName);
+		properties.put(MavenProjectUtil.PROP_USERNAME, "postgres");
+		properties.put(MavenProjectUtil.PROP_PASSWORD, "postgres");
+		properties.put(MavenProjectUtil.PROP_JDBC_URL, jdbcUrl);
+		properties.put(MavenProjectUtil.PROP_WORK_DIRECTORY, workingDirectory.getAbsolutePath());
+		properties.put(MavenProjectUtil.PROP_DATA_DIRECTORY, dataDirectory.getAbsolutePath());
+		properties.put(MavenProjectUtil.PROP_DB_INSTANCE, pg);
 
 		MavenProjectUtil.putProjectProperty(project, reactorProjects, properties);
 	}
