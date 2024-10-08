@@ -9,6 +9,9 @@
 	</properties>
 
 	<body>
+		<release version="0.5-SNAPSHOT" date="n/a" description="n/a">
+		</release>
+
 		<release version="0.4" date="2024-10-07" description="Bug fix release">
 			<action dev="bahlef" type="fix">
 				Fixed NPE
