@@ -28,7 +28,7 @@ import io.zonky.test.db.postgres.embedded.EmbeddedPostgres;
 /**
  * Goal which starts an embedded postgres database.
  */
-@Mojo(name = "start", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = true)
+@Mojo(name = "start", defaultPhase = LifecyclePhase.INITIALIZE, requiresProject = true, threadSafe = false)
 public class StartEmbeddedPostgresMojo extends AbstractMojo {
 	/**
 	 * The port on which the database will be accessible. A value less than or equal to 0 means auto detect a free port. The port is available through the property ${zonky.port}.

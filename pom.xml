@@ -19,7 +19,7 @@
 
 	<groupId>de.funfried.maven.plugins</groupId>
 	<artifactId>zonky-maven-plugin</artifactId>
-	<version>0.5</version>
+	<version>0.6</version>
 	<packaging>maven-plugin</packaging>
 
 	<developers>

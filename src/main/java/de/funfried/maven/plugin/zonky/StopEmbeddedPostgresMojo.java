@@ -19,7 +19,7 @@ import io.zonky.test.db.postgres.embedded.EmbeddedPostgres;
 /**
  * Goal which stops the embedded postgres database.
  */
-@Mojo(name = "stop", defaultPhase = LifecyclePhase.NONE)
+@Mojo(name = "stop", defaultPhase = LifecyclePhase.PRE_CLEAN, threadSafe = false)
 public class StopEmbeddedPostgresMojo extends AbstractMojo {
 	/**
 	 * The maven project.

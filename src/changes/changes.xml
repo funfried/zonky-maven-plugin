@@ -9,6 +9,12 @@
 	</properties>
 
 	<body>
+		<release version="0.6" date="2024-10-09" description="Maintenance release">
+			<action dev="bahlef" type="update">
+				Changed Mojo to not thread safe
+			</action>
+		</release>
+
 		<release version="0.5" date="2024-10-08" description="Feature release">
 			<action dev="bahlef" type="add">
 				Added flag to switch between single instance for all multimodule project or an instance for each sub module (which configures the plugin)
