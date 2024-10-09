@@ -12,9 +12,13 @@ import org.apache.maven.project.MavenProject;
  * @author fbahle
  */
 public class MavenProjectUtil {
+	public static final String PROP_ENABLED = "zonky.required";
+
 	public static final String PROP_HOST = "zonky.host";
 
 	public static final String PROP_PORT = "zonky.port";
+
+	public static final String PROP_CREATE_DATABASE = "zonky.createDatabase";
 
 	public static final String PROP_DATABASE = "zonky.database";
 
@@ -52,6 +56,10 @@ public class MavenProjectUtil {
 	}
 
 	private static <E extends Object> E getProjectProperty(MavenProject project, String key) {
+		if (project == null) {
+			return null;
+		}
+
 		return (E) project.getProperties().get(key);
 	}
 
