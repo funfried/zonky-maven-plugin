@@ -9,6 +9,9 @@
 	</properties>
 
 	<body>
+		<release version="0.7-SNAPSHOT" date="n/a" description="n/a">
+		</release>
+
 		<release version="0.6" date="2024-10-09" description="Maintenance release">
 			<action dev="bahlef" type="update">
 				Changed Mojo to not thread safe
